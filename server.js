@@ -4,8 +4,13 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import jwt from 'jsonwebtoken';
 import * as msal from '@azure/msal-node';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 dotenv.config({ override: true });
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const app = express();
 app.use(cors());
@@ -1168,6 +1173,14 @@ app.post('/api/dev/auto-assign', authMiddleware, async (req, res) => {
     }
     await autoAssignDuties();
     res.json({ success: true, message: 'Die automatische Einteilung wurde erfolgreich durchgeführt.' });
+});
+
+// Serve static files
+app.use(express.static(__dirname));
+
+// Serve the main HTML file for all non-API routes
+app.get('/', (req, res) => {
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // 404 Handler
