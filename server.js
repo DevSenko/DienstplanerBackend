@@ -13,7 +13,15 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: [
+        'https://itdienstplaner.netlify.app',
+        'http://localhost:3000',
+        'http://localhost:5500'  // Für lokale Entwicklung
+    ],
+    credentials: true,
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS']
+}));
 app.use(express.json({ limit: '10mb' })); // Erhöhtes Limit für Profilbilder (Base64)
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 
